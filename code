@@ -1,0 +1,57 @@
+-- comando usado para criar um banco de dados.
+create database Cinema;
+
+-- comando para usar o banco de dados criado.
+use Cinema;
+
+-- use o comando CREATE TABLE para poder criar tabelas.
+create table Ator(
+IdAtor smallint primary key auto_increment,
+NomeAtor varchar(30) not null,
+SobrenomeAtor varchar(40) not null);
+
+create table Diretor(
+IdDiretor smallint primary key auto_increment,
+NomeDiretor varchar(30) not null,
+SobrenomeDiretor varchar(40) not null);
+
+create table Estilo(
+IdEstilo tinyint primary key auto_increment,
+Estilo varchar(40) not null);
+
+create table Filme(
+IdFilme smallint primary key auto_increment,
+TituloFilme varchar(50) not null,
+SubtituloFilme varchar(60) not null,
+AnoPublicacao date not null,
+ClassificacaoIndicativa tinyint not null,
+Estudio varchar(40) not null unique,
+IdAtor smallint not null, foreign key(IdAtor) references Ator(IdAtor),
+IdDiretor smallint not null, foreign key(IdDiretor) references Diretor(IdDiretor),
+IdEstilo tinyint not null, foreign key(IdEstilo) references Estilo(IdEstilo));
+
+
+-- o comando INSERT INTO é usado para inserir dados nas tabelas criadas
+insert into Ator(NomeAtor, SobrenomeAtor)
+values
+('Manuela', 'Soares');
+
+
+insert into Diretor(NomeDiretor, SobrenomeDiretor)
+values
+('Francis', 'Copolla');
+
+insert into Estilo(Estilo)
+values
+('Ação');
+
+
+-- essa tabela foi criar para usar as relações estrangeiras e criar a comunicação entre tabelas.
+create table AtorDiretoFilme (
+IdAtor smallint not null, foreign key(IdAtor) references Ator(IdAtor),
+IdDiretor smallint not null, foreign key(IdDiretor) references Diretor(IdDiretor),
+IdFilme smallint not null, foreign key(IdFilme) references Filme(IdFilme),
+constraint primary key(IdAtor,IdDiretor,IdFilme));
+
+-- um exemplo de busca mais simples no ambiente banco de dados
+select * from Ator;
